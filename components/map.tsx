@@ -63,7 +63,13 @@ export default function Map() {
 						const selectedCafe = data.splice(randomeIndex, 1);
 						console.log("selectedCafe", selectedCafe);
 						const reseponse = await fetch(
-							`//place.map.kakao.com/m/main/v/${selectedCafe[0].id}`
+							`//place.map.kakao.com/m/main/v/${selectedCafe[0].id}`,
+							{
+								method: "GET",
+								headers: {
+									"Access-Control-Allow-Origin": "*",
+								},
+							}
 						).then((d) => d.json());
 						console.log(reseponse);
 						displayMarker(selectedCafe[0], map);
