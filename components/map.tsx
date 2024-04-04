@@ -1,6 +1,5 @@
 "use client";
 import { KAKAO_KEY } from "@/app/constants";
-import axios from "axios";
 import Script from "next/script";
 import { useEffect, useRef } from "react";
 declare const kakao: any;
@@ -63,30 +62,16 @@ export default function Map() {
 						const randomeIndex = Math.floor(Math.random() * data.length) + 1;
 						const selectedCafe = data.splice(randomeIndex, 1);
 						console.log("selectedCafe", selectedCafe);
-						// const reseponse = await fetch(
-						// 	`//place.map.kakao.com/main/v/${selectedCafe[0].id}`,
-						// 	{
-						// 		method: "GET",
-						// 		headers: {
-						// 			"Access-Control-Allow-Origin": "*",
-						// 		},
-						// 	}
-						// ).then((d) => d.json());
-
-						const fetchData = async () => {
-							try {
-								const response = await axios.get(
-									`//place.map.kakao.com/m/main/v/${selectedCafe[0].id}`
-								);
-								return response.data;
-							} catch (error) {
-								console.error("Error fetching data:", error);
-								throw error; // 오류를 호출한 쪽으로 전파
+						const reseponse = await fetch(
+							`//place.map.kakao.com/m/main/v/${selectedCafe[0].id}`,
+							{
+								method: "GET",
+								headers: {
+									"Access-Control-Allow-Origin": "*",
+								},
 							}
-						};
-						fetchData();
-
-						// console.log(reseponse);
+						).then((d) => d.json());
+						console.log(reseponse);
 						displayMarker(selectedCafe[0], map);
 					}
 				}
