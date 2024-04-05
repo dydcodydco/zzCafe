@@ -62,16 +62,21 @@ export default function Map() {
 						const randomeIndex = Math.floor(Math.random() * data.length) + 1;
 						const selectedCafe = data.splice(randomeIndex, 1);
 						console.log("selectedCafe", selectedCafe);
-						const reseponse = await fetch(
-							`//place.map.kakao.com/m/main/v/${selectedCafe[0].id}`,
-							{
-								method: "GET",
-								headers: {
-									"Access-Control-Allow-Origin": "*",
-								},
-							}
+						// const reseponse = await fetch(
+						// 	`//place.map.kakao.com/m/main/v/${selectedCafe[0].id}`,
+						// 	{
+						// 		method: "GET",
+						// 		headers: {
+						// 			"Access-Control-Allow-Origin": "*",
+						// 		},
+						// 	}
+						// ).then((d) => d.json());
+						// console.log(reseponse);
+
+						const response = await fetch(
+							`/api/kakamapDetail?id=${selectedCafe[0].id}`
 						).then((d) => d.json());
-						console.log(reseponse);
+						console.log(response);
 						displayMarker(selectedCafe[0], map);
 					}
 				}
