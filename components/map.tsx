@@ -11,11 +11,6 @@ export default function Map() {
 	const [loading, setLoading] = useState(true);
 	const [kakaoLoad, setKakaoLoad] = useState(false);
 
-	// 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
-	window.closeOverlay = (overlay: any) => {
-		overlay.setMap(null);
-	};
-
 	// 지도에 마커를 표시하는 함수입니다
 	const addMarker = (place: any, clusterer: any) => {
 		// 마커를 생성하고 지도에 표시합니다
@@ -172,6 +167,11 @@ export default function Map() {
 			console.log(2);
 			// setKaKaoMap();
 		}
+
+		// 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
+		window.closeOverlay = (overlay: any) => {
+			overlay.setMap(null);
+		};
 	}, []);
 
 	return (
