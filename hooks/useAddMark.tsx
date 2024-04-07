@@ -29,7 +29,7 @@ export function useAddMarker(props: {
 		}
 		const marker = new kakao.maps.Marker(markerObj);
 		// clusterer.addMarkers(marker);
-		// setClusterData(clusterer)
+		// setClusterData(clusterer);
 	};
 	return { setMarker };
 }
