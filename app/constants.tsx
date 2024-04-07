@@ -19,7 +19,7 @@ export interface ILocation {
 }
 
 export interface IDrawRouteProps {
-	oroginLocation: any;
+	originLocation: any;
 	destinationLocation: any;
 	mapData: any;
 	selectedCafe: ICafeProps;

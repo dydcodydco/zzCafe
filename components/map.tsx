@@ -1,26 +1,19 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import { useRecoilState } from "recoil";
-import { clusterState, mapDataSate, randomCafeState } from "@/store/inex";
+import { mapDataSate } from "@/store/inex";
 import { useAddMarker } from "@/hooks/useAddMark";
-import {
-	IDrawRouteProps,
-	KAKAO_NAVI_URL,
-	KAKAO_REST_KEY,
-} from "@/app/constants";
-import { useDrawRoute } from "@/hooks/useDrawRoute";
+import { useRandomCafe } from "@/hooks/useRandomCafe";
 
 export default function Map() {
 	const mapEl = useRef(null);
 	const [loading, setLoading] = useState(true);
 	const curLocation = useGeoLocation();
 	const [mapData, setMapData] = useRecoilState(mapDataSate);
-	const [clusterData, setCluster] = useRecoilState(clusterState);
-	const [randomCafe, setRandomCafe] = useRecoilState(randomCafeState);
 	const { setMarker } = useAddMarker({} as any);
-	const { drawRoute } = useDrawRoute();
+	const { setRandomCafeMap } = useRandomCafe();
 
 	useEffect(() => {
 		const { kakao } = window;
@@ -59,31 +52,14 @@ export default function Map() {
 					"//t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
 			});
 
-			// 주위 카페 중 랜덤 카페 하나 가져오기
-			const ps = new kakao.maps.services.Places(map);
-			const placesSearchCB = async (data: any, status: any) => {
-				const { kakao } = window;
-				if (status === kakao.maps.services.Status.OK) {
-					const selectedCafe = data[Math.floor(Math.random() * data.length)];
-					// setRandomCafe(selectedCafe);
-					// 오늘의 랜덤 카페 표시
-					setMarker({
-						curLocation: { y: selectedCafe.y, x: selectedCafe.x },
-						clusterer,
-						kakao,
-						map,
-					});
-
-					drawRoute({
-						oroginLocation: { y: latitude, x: longitude },
-						destinationLocation: { y: selectedCafe.y, x: selectedCafe.x },
-						mapData: map,
-						selectedCafe,
-					});
-				}
-			};
-			ps.categorySearch("CE7", placesSearchCB, {
-				useMapBounds: true,
+			// 주위 카페 중 랜덤 카페 하나 가져와서 지도에 세팅
+			setRandomCafeMap({
+				clusterer,
+				map,
+				curLocation: {
+					y: latitude,
+					x: longitude,
+				},
 			});
 
 			kakao.maps.event.addListener(map, "tilesloaded", function (data: any) {

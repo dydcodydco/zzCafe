@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 export const useDrawRoute = () => {
 	const [randomCafe, setRandomCafe] = useRecoilState(randomCafeState);
 	const drawRoute = async ({
-		oroginLocation,
+		originLocation: originLocation,
 		destinationLocation,
 		mapData,
 		selectedCafe,
@@ -19,7 +19,7 @@ export const useDrawRoute = () => {
 		try {
 			const { kakao } = window;
 			const paramsObj = {
-				origin: `${oroginLocation.x},${oroginLocation.y}`,
+				origin: `${originLocation.x},${originLocation.y}`,
 				destination: `${destinationLocation.x},${destinationLocation.y}`,
 				priority: "RECOMMEND",
 			};
