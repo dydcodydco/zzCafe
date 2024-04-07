@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import { useRecoilState } from "recoil";
-import { clusterState, mapDataSate } from "@/store/inex";
+import { clusterState, mapDataSate, randomCafeState } from "@/store/inex";
 import { useAddMarker } from "@/hooks/useAddMark";
 import {
 	IDrawRouteProps,
@@ -17,6 +17,7 @@ export default function Map() {
 	const curLocation = useGeoLocation();
 	const [mapData, setMapData] = useRecoilState(mapDataSate);
 	const [clusterData, setCluster] = useRecoilState(clusterState);
+	const [randomCafe, setRandomCafe] = useRecoilState(randomCafeState);
 	const { setMarker } = useAddMarker({} as any);
 
 	const drawRoute = useCallback(
@@ -46,6 +47,11 @@ export default function Map() {
 				const guideArr = result.routes[0].sections[0].guides.map(
 					(guide: any) => new kakao.maps.LatLng(guide.y, guide.x)
 				);
+				randomCafe.distance = formatMeterWithComma(
+					result.routes[0].summary.distance
+				);
+				randomCafe.taxiFee = formatMoneyKRW(result.routes[0].summary.fee);
+				setRandomCafe(randomCafe);
 
 				new kakao.maps.Polyline({
 					map: mapData,
@@ -105,6 +111,8 @@ export default function Map() {
 				const { kakao } = window;
 				if (status === kakao.maps.services.Status.OK) {
 					const selectedCafe = data[Math.floor(Math.random() * data.length)];
+					setRandomCafe(selectedCafe);
+					console.log(selectedCafe);
 					// 오늘의 랜덤 카페 표시
 					setMarker({
 						curLocation: { y: selectedCafe.y, x: selectedCafe.x },
@@ -137,11 +145,11 @@ export default function Map() {
 	return (
 		<div className='relative'>
 			{loading && (
-				<Skeleton className='w-full h-full min-h-[400px] lg:min-h-[500px] absolute top-0 left-0 z-10' />
+				<Skeleton className='w-full h-full min-h-[300px] lg:min-h-[600px] absolute top-0 left-0 z-10' />
 			)}
 			<div
 				ref={mapEl}
-				className={`w-full h-full min-h-[500px] ${
+				className={`w-full h-full min-h-[300px] lg:min-h-[600px] ${
 					loading ? "invisible" : "block"
 				}`}
 			></div>

@@ -1,3 +1,4 @@
+import { ICafeProps } from "@/app/constants";
 import { atom } from "recoil";
 
 export const mapDataSate = atom({
@@ -16,4 +17,9 @@ export const curLocationState = atom({
 		latitude: 0,
 		longitude: 0,
 	},
+});
+
+export const randomCafeState = atom({
+	key: "randomCafeState",
+	default: {} as ICafeProps,
 });
