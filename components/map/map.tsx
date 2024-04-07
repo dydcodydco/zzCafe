@@ -121,9 +121,7 @@ export default function Map() {
 								throw e;
 							});
 							const guideArr = result.routes[0].sections[0].guides.map(
-								(guide: IMapGuide) => {
-									new kakao.maps.LatLng(guide.y, guide.x);
-								}
+								(guide: IMapGuide) => new kakao.maps.LatLng(guide.y, guide.x)
 							);
 
 							new kakao.maps.Polyline({
