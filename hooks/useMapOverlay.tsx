@@ -18,18 +18,20 @@ export function useMapOveray() {
 					map: map,
 					position,
 			  });
-		const content = `<div class='overlay-label'>
-                    ${cafe ? cafe?.place_name : "내 위치"}
-                    <div class="close" onclick="closeOverlay()" title="닫기">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                </div>`;
+		const overlayContent = document.createElement("div");
+		overlayContent.className = "overlay-label";
+		overlayContent.innerHTML = `${cafe ? cafe.place_name : "내 위치"}`;
+		const closeButton = document.createElement("div");
+		closeButton.className = "close";
+		closeButton.title = "닫기";
+		closeButton.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>`;
+		overlayContent.appendChild(closeButton);
 
 		const overlay = new kakao.maps.CustomOverlay({
-			content: content,
+			content: overlayContent,
 			map: map,
 			position,
 			xAnchor: 0.5,
@@ -40,9 +42,9 @@ export function useMapOveray() {
 			overlay.setMap(map);
 		});
 
-		window.closeOverlay = () => {
+		closeButton.addEventListener("click", function () {
 			overlay.setMap(null);
-		};
+		});
 	};
 	return { mapOveray };
 }
