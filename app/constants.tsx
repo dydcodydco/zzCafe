@@ -22,6 +22,7 @@ export interface IDrawRouteProps {
 	oroginLocation: any;
 	destinationLocation: any;
 	mapData: any;
+	selectedCafe: ICafeProps;
 }
 
 export interface ICafeProps {

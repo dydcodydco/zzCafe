@@ -45,19 +45,23 @@ export default function Component() {
 						</div>
 						<div className='mx-auto grid max-w-5xl items-start gap-10 sm:gap-16 lg:grid-cols-2 lg:gap-12'>
 							<div className='flex flex-col items-start space-y-2'>
-								<Link href={rancomCafe?.place_url || "/"} target='_blank'>
-									<h3 className='text-xl font-bold'>주소 / 홈페이지</h3>
-									<p className='text-gray-500 dark:text-gray-400'>
-										{rancomCafe?.address_name}
-										<br />
+								<h3 className='text-xl font-bold'>
+									주소 / 홈페이지 / 전화번호
+								</h3>
+								<p className='text-gray-500 dark:text-gray-400'>
+									{rancomCafe?.address_name}
+									<br />
+									<Link href={rancomCafe?.place_url || "/"} target='_blank'>
 										{rancomCafe?.place_url}
-									</p>
-								</Link>
+									</Link>
+									<br />
+									<a href={`tel:+${rancomCafe?.phone}`}>{rancomCafe?.phone}</a>
+								</p>
 							</div>
 							<div className='flex flex-col items-start space-y-2'>
 								<h3 className='text-xl font-bold'>거리 / 택시비</h3>
 								<p className='text-gray-500 dark:text-gray-400'>
-									{rancomCafe?.distance}
+									{rancomCafe?.distance} | {rancomCafe?.taxiFee}원
 								</p>
 							</div>
 							<div className='flex flex-col items-start space-y-2'>

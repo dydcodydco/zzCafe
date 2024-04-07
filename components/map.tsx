@@ -79,6 +79,7 @@ export default function Map() {
 						oroginLocation: { y: latitude, x: longitude },
 						destinationLocation: { y: selectedCafe.y, x: selectedCafe.x },
 						mapData: map,
+						selectedCafe,
 					});
 				}
 			};

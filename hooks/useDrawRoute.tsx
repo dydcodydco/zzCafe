@@ -14,6 +14,7 @@ export const useDrawRoute = () => {
 		oroginLocation,
 		destinationLocation,
 		mapData,
+		selectedCafe,
 	}: IDrawRouteProps) => {
 		try {
 			const { kakao } = window;
@@ -36,11 +37,11 @@ export const useDrawRoute = () => {
 			const guideArr = result.routes[0].sections[0].guides.map(
 				(guide: any) => new kakao.maps.LatLng(guide.y, guide.x)
 			);
-			randomCafe.distance = formatMeterWithComma(
+			selectedCafe.distance = formatMeterWithComma(
 				result.routes[0].summary.distance
 			);
-			randomCafe.taxiFee = formatMoneyKRW(result.routes[0].summary.fare.taxi);
-			setRandomCafe(randomCafe);
+			selectedCafe.taxiFee = formatMoneyKRW(result.routes[0].summary.fare.taxi);
+			setRandomCafe(selectedCafe);
 
 			new kakao.maps.Polyline({
 				map: mapData,
