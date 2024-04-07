@@ -37,7 +37,7 @@ export const useDrawRoute = () => {
 			randomCafe.distance = formatMeterWithComma(
 				result.routes[0].summary.distance
 			);
-			randomCafe.taxiFee = formatMoneyKRW(result.routes[0].summary.fee);
+			randomCafe.taxiFee = formatMoneyKRW(result.routes[0].summary.fare.taxi);
 			setRandomCafe(randomCafe);
 
 			new kakao.maps.Polyline({
