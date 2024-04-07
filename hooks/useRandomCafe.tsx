@@ -1,5 +1,6 @@
 import { useAddMarker } from "./useAddMark";
 import { useDrawRoute } from "./useDrawRoute";
+import { useMapOveray } from "./useMapOverlay";
 
 export interface IRandomCafeProps {
 	clusterer: any;
@@ -8,8 +9,10 @@ export interface IRandomCafeProps {
 }
 
 export function useRandomCafe() {
-	const { setMarker } = useAddMarker({} as any);
+	const { setMarker } = useAddMarker();
 	const { drawRoute } = useDrawRoute();
+	const { mapOveray } = useMapOveray();
+
 	const setRandomCafeMap = ({
 		clusterer,
 		map,
@@ -29,6 +32,13 @@ export function useRandomCafe() {
 					clusterer,
 					kakao,
 					map,
+				});
+
+				mapOveray({
+					map,
+					cafeLocation: { y: selectedCafe.y, x: selectedCafe.x },
+					marker: false,
+					cafe: selectedCafe,
 				});
 
 				drawRoute({

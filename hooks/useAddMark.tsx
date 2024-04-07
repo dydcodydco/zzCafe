@@ -9,11 +9,7 @@ export interface IMarkerProps {
 	image?: string;
 }
 
-export function useAddMarker(props: {
-	curLocation: any;
-	clusterer: any;
-	kakao: any;
-}) {
+export function useAddMarker() {
 	const setClusterData = useSetRecoilState(clusterState);
 	const setMarker = (props: IMarkerProps) => {
 		const { curLocation, clusterer, kakao, map, image } = props;
@@ -28,6 +24,7 @@ export function useAddMarker(props: {
 			markerObj.image = markerImage;
 		}
 		const marker = new kakao.maps.Marker(markerObj);
+		return marker;
 		// clusterer.addMarkers(marker);
 		// setClusterData(clusterer);
 	};

@@ -6,14 +6,16 @@ import { useRecoilState } from "recoil";
 import { mapDataSate } from "@/store/inex";
 import { useAddMarker } from "@/hooks/useAddMark";
 import { useRandomCafe } from "@/hooks/useRandomCafe";
+import { useMapOveray } from "@/hooks/useMapOverlay";
 
 export default function Map() {
 	const mapEl = useRef(null);
 	const [loading, setLoading] = useState(true);
 	const curLocation = useGeoLocation();
 	const [mapData, setMapData] = useRecoilState(mapDataSate);
-	const { setMarker } = useAddMarker({} as any);
+	const { setMarker } = useAddMarker();
 	const { setRandomCafeMap } = useRandomCafe();
+	const { mapOveray } = useMapOveray();
 
 	useEffect(() => {
 		const { kakao } = window;
@@ -43,13 +45,19 @@ export default function Map() {
 			});
 
 			// 내 집 표시
-			setMarker({
+			const marker = setMarker({
 				curLocation: { y: latitude, x: longitude },
 				clusterer,
 				kakao,
 				map,
 				image:
 					"//t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+			});
+
+			mapOveray({
+				map,
+				cafeLocation: { y: latitude, x: longitude },
+				marker,
 			});
 
 			// 주위 카페 중 랜덤 카페 하나 가져와서 지도에 세팅

@@ -47,7 +47,7 @@ export const useDrawRoute = () => {
 				map: mapData,
 				path: guideArr,
 				strokeWeight: 8,
-				strokeColor: "pink",
+				strokeColor: "rgb(203 213 225 / var(--tw-bg-opacity))",
 				strokeOpacity: 0.8,
 				strokeStyle: "solid",
 			});

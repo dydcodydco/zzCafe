@@ -30,8 +30,8 @@ export interface ICafeProps {
 	category_group_code: string;
 	category_group_name: string;
 	category_name: string;
-	distance: string;
-	taxiFee: string;
+	distance?: string;
+	taxiFee?: string;
 	id: string;
 	phone: string;
 	place_name: string;
