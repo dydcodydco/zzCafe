@@ -120,7 +120,7 @@ export default function Map() {
 							const result = await response.json().catch((e) => {
 								throw e;
 							});
-							const guideArr = result.routes[0].section[0].guides.map(
+							const guideArr = result.routes[0].sections[0].guides.map(
 								(guide: IMapGuide) => {
 									new kakao.maps.LatLng(guide.y, guide.x);
 								}
