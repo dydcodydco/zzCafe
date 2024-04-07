@@ -4,7 +4,12 @@ import "./globals.css";
 import Navigation from "@/components/navigation";
 import Script from "next/script";
 import { KAKAO_JS_KEY } from "./constants";
-
+declare global {
+	interface Window {
+		kakao: any;
+		closeOverlay: any;
+	}
+}
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,10 +25,10 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-				{/* <Script
-					defer
-					src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_KEY}&autoload=false&libraries=LIBRARY,services,clusterer,drawing"`}
-				/> */}
+				<Script
+					strategy={"beforeInteractive"}
+					src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false&libraries=services,clusterer,drawing`}
+				/>
 				<Navigation />
 				{children}
 			</body>

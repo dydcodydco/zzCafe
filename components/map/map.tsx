@@ -4,13 +4,11 @@ import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { IMapGuide } from "./interface";
-declare const kakao: any;
-declare const window: any;
+import { ILocation, useGeoLocation } from "@/hooks/useGeoLocation";
 
 export default function Map() {
 	const mapEl = useRef(null);
 	const [loading, setLoading] = useState(true);
-	const [kakaoLoad, setKakaoLoad] = useState(false);
 
 	// 지도에 마커를 표시하는 함수입니다
 	const addMarker = (place: any, clusterer: any) => {
@@ -48,129 +46,110 @@ export default function Map() {
 		// infowindow.open(map, marker);
 	};
 
+	const location = useGeoLocation();
 	const setKaKaoMap = useCallback(async () => {
-		let lat = 0;
-		let lon = 0;
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				// lat = position.coords.latitude; // 위도
-				// lon = position.coords.longitude; // 경도
-				lon = 127.071315; // 위도
-				lat = 37.546542; // 경도
+		const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+		const container = mapEl.current; //지도를 담을 영역의 DOM 레퍼런스
+		const options = {
+			center: new kakao.maps.LatLng(location.latitude, location.longitude), //지도의 중심좌표.
+			level: 4, //지도의 레벨(확대, 축소 정도)
+		};
 
-				const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-				const container = mapEl.current; //지도를 담을 영역의 DOM 레퍼런스
-				const options = {
-					center: new kakao.maps.LatLng(lat, lon), //지도의 중심좌표.
-					level: 4, //지도의 레벨(확대, 축소 정도)
-				};
+		const map = new kakao.maps.Map(container, options);
+		kakao.maps.event.addListener(map, "tilesloaded", function (data: any) {
+			setLoading(false);
+		});
 
-				const map = new kakao.maps.Map(container, options);
-				kakao.maps.event.addListener(map, "tilesloaded", function (data: any) {
-					setLoading(false);
+		const clusterer = new kakao.maps.MarkerClusterer({
+			map: map,
+			averageCenter: true,
+			minLevel: 3,
+		});
+
+		const imageSrc =
+			"//t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+		const imageSize = new kakao.maps.Size(24, 35);
+		const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+		const marker = new kakao.maps.Marker();
+		marker.setPosition(
+			new kakao.maps.LatLng(location.latitude, location.longitude)
+		);
+		marker.setMap(map);
+		marker.setImage(markerImage);
+		clusterer.addMarkers(marker);
+
+		const ps = new kakao.maps.services.Places(map);
+
+		const placesSearch = async (data: any, status: any, options: any) => {
+			if (status === kakao.maps.services.Status.OK) {
+				const randomeIndex = Math.floor(Math.random() * data.length);
+				const selectedCafe = data.splice(randomeIndex, 1)[0];
+
+				const marker = new kakao.maps.Marker({
+					position: new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x),
 				});
+				clusterer.addMarker(marker);
+				map.setCenter(new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x));
 
-				const clusterer = new kakao.maps.MarkerClusterer({
-					map: map,
-					averageCenter: true,
-					minLevel: 3,
-				});
+				setMapLayOut(selectedCafe, map, marker);
 
-				const imageSrc =
-					"//t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-				const imageSize = new kakao.maps.Size(24, 35);
-				const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-				const marker = new kakao.maps.Marker();
-				marker.setPosition(new kakao.maps.LatLng(lat, lon));
-				marker.setMap(map);
-				marker.setImage(markerImage);
-				clusterer.addMarkers(marker);
+				try {
+					const paramsObj = {
+						origin: `${location.longitude}, ${location.latitude}`,
+						destination: `${selectedCafe.x}, ${selectedCafe.y}`,
+						priority: "RECOMMEND",
+					} as any;
+					const queryStr = new URLSearchParams(paramsObj) as any;
+					const response = await fetch(`${KAKAO_NAVI_URL}?${queryStr}`, {
+						method: "GET",
+						headers: {
+							Authorization: `KakaoAK ${KAKAO_REST_KEY}`,
+							"content-type": "application/json",
+						},
+					});
+					const result = await response.json().catch((e) => {
+						throw e;
+					});
+					const guideArr = result.routes[0].sections[0].guides.map(
+						(guide: IMapGuide) => new kakao.maps.LatLng(guide.y, guide.x)
+					);
 
-				const ps = new kakao.maps.services.Places(map);
-
-				const placesSearch = async (data: any, status: any, options: any) => {
-					if (status === kakao.maps.services.Status.OK) {
-						const randomeIndex = Math.floor(Math.random() * data.length);
-						const selectedCafe = data.splice(randomeIndex, 1)[0];
-
-						const marker = new kakao.maps.Marker({
-							position: new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x),
-						});
-						clusterer.addMarker(marker);
-						map.setCenter(
-							new kakao.maps.LatLng(selectedCafe.y, selectedCafe.x)
-						);
-
-						setMapLayOut(selectedCafe, map, marker);
-
-						try {
-							const paramsObj = {
-								origin: `${lon}, ${lat}`,
-								destination: `${selectedCafe.x}, ${selectedCafe.y}`,
-								priority: "RECOMMEND",
-							} as any;
-							const queryStr = new URLSearchParams(paramsObj) as any;
-							const response = await fetch(`${KAKAO_NAVI_URL}?${queryStr}`, {
-								method: "GET",
-								headers: {
-									Authorization: `KakaoAK ${KAKAO_REST_KEY}`,
-									"content-type": "application/json",
-								},
-							});
-							const result = await response.json().catch((e) => {
-								throw e;
-							});
-							const guideArr = result.routes[0].sections[0].guides.map(
-								(guide: IMapGuide) => new kakao.maps.LatLng(guide.y, guide.x)
-							);
-
-							new kakao.maps.Polyline({
-								map: map,
-								path: guideArr,
-								strokeWeight: 8,
-								strokeColor: "#FF00FF",
-								strokeOpacity: 0.8,
-								strokeStyle: "solid",
-							});
-						} catch (e) {
-							console.log(e);
-						}
-					}
-				};
-				ps.categorySearch("CE7", placesSearch, {
-					useMapBounds: true,
-				});
-			});
-		}
-	}, []);
+					new kakao.maps.Polyline({
+						map: map,
+						path: guideArr,
+						strokeWeight: 8,
+						strokeColor: "pink",
+						strokeOpacity: 0.8,
+						strokeStyle: "solid",
+					});
+				} catch (e) {
+					console.log(e);
+				}
+			}
+		};
+		ps.categorySearch("CE7", placesSearch, {
+			useMapBounds: true,
+		});
+	}, [location.latitude, location.longitude]);
 
 	useEffect(() => {
-		console.log(1);
-		if (!kakaoLoad) {
-			console.log(2);
-			// setKaKaoMap();
-		}
+		const { kakao } = window;
+		const { latitude, longitude } = location;
+		if (!kakao && latitude === 0 && longitude === 0) return;
+
+		kakao.maps.load(() => {
+			setKaKaoMap();
+		});
 
 		window.closeOverlay = (overlay: any) => {
 			overlay.setMap(null);
 		};
-	}, []);
+	}, [location, setKaKaoMap]);
 
 	return (
 		<div className='relative'>
-			<Script
-				src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false&libraries=services,clusterer,drawing`}
-				onLoad={() => {
-					if (window.kakao) {
-						kakao.maps.load(() => {
-							setKakaoLoad(true);
-							setKaKaoMap();
-						});
-					}
-				}}
-			/>
 			{loading && (
-				<Skeleton className='w-full h-full min-h-[500px] absolute top-0 left-0 z-10' />
+				<Skeleton className='w-full h-full min-h-[400px] lg:min-h-[500px] absolute top-0 left-0 z-10' />
 			)}
 			<div
 				ref={mapEl}
