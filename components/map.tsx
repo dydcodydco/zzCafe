@@ -1,5 +1,5 @@
 "use client";
-import { KAKAO_JS_KEY, KAKAO_REST_KEY } from "@/app/constants";
+import { KAKAO_JS_KEY, KAKAO_NAVI_URL, KAKAO_REST_KEY } from "@/app/constants";
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
@@ -13,7 +13,6 @@ export default function Map() {
 
 	// 지도에 마커를 표시하는 함수입니다
 	const addMarker = (place: any, clusterer: any) => {
-		// 마커를 생성하고 지도에 표시합니다
 		const marker = new kakao.maps.Marker({
 			position: new kakao.maps.LatLng(place.y, place.x),
 		});
@@ -21,39 +20,31 @@ export default function Map() {
 	};
 
 	const setMapLayOut = (selectedCafe: any, map: any, marker: any) => {
-		// 	const content = `
-		// <div class="bg-white border border-slate-500">
-		//     <div class="info">
-		//         <div class="grid grid-cols-2">
-		//             ${selectedCafe.place_name}
-		//             <div class="close" onclick="closeOverlay(overlay)" title="닫기">닫기</div>
-		//         </div>
-		//         <div class="flex">
-		//             <div class="felx flex-grow-0 flex-shrink-0 basis-auto">
-		//                 <img class='' src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70">
-		//             </div>
-		//             <div class="desc">
-		//                 <div class="ellipsis">${selectedCafe.address_name}</div>
-		//                 <div class="ellipsis">${selectedCafe.phone}</div>
-		//                 <div><a href="${selectedCafe.place_url}" target="_blank" class="link">홈페이지</a></div>
-		//             </div>
-		//         </div>
-		//     </div>
-		// </div>`;
-		// 	// 마커 위에 커스텀오버레이를 표시합니다
-		// 	// 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-		// 	window.overlay = new kakao.maps.CustomOverlay({
-		// 		content: content,
-		// 		map: map,
-		// 		position: marker.getPosition(),
-		// 	});
-		// 	window.overlay.setMap(map);
+		const content = `
+		<div class="bg-white border border-slate-500 rounded-2xl px-3 py-1 text-sm flex items-center">
+		            ${selectedCafe.place_name}
+		            <div class="ml-[4px] mb-[2px]" onclick="closeOverlay(overlay)">
+						<svg width="15" height="15" className='ml-5' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</div>
+		</div>`;
+
+		window.overlay = new kakao.maps.CustomOverlay({
+			content: content,
+			map: map,
+			position: marker.getPosition(),
+			xAnchor: 0.5,
+			yAnchor: 2,
+		});
+		window.overlay.setMap(map);
 
 		// 인포윈도우로 장소에 대한 설명을 표시합니다
-		var infowindow = new kakao.maps.InfoWindow({
-			content: `<div style="width:150px;text-align:center;padding:6px 0;">${selectedCafe.place_name}</div>`,
-		});
-		infowindow.open(map, marker);
+		// var infowindow = new kakao.maps.InfoWindow({
+		// 	content: `<div style="width:150px;text-align:center;padding:6px 0;">${selectedCafe.place_name}</div>`,
+		// });
+		// infowindow.open(map, marker);
 	};
 
 	const setKaKaoMap = useCallback(async () => {
@@ -123,21 +114,15 @@ export default function Map() {
 							origin: `${lon}, ${lat}`,
 							destination: `${selectedCafe.x}, ${selectedCafe.y}`,
 							priority: "RECOMMEND",
-							alternatives: "true",
-							road_details: "true",
-							summary: "true",
 						} as any;
 						const queryStr = new URLSearchParams(paramsObj) as any;
-						const response = await fetch(
-							`//apis-navi.kakaomobility.com/v1/directions?${queryStr}`,
-							{
-								method: "GET",
-								headers: {
-									Authorization: `KakaoAK ${KAKAO_REST_KEY}`,
-									"content-type": "application/json",
-								},
-							}
-						);
+						const response = await fetch(`${KAKAO_NAVI_URL}?${queryStr}`, {
+							method: "GET",
+							headers: {
+								Authorization: `KakaoAK ${KAKAO_REST_KEY}`,
+								"content-type": "application/json",
+							},
+						});
 						const result = await response.json();
 						console.log(result);
 
