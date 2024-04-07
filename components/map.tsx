@@ -1,5 +1,5 @@
 "use client";
-import { KAKAO_KEY } from "@/app/constants";
+import { KAKAO_JS_KEY, KAKAO_REST_KEY } from "@/app/constants";
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
@@ -120,20 +120,21 @@ export default function Map() {
 						setMapLayOut(selectedCafe, map, marker);
 
 						const paramsObj = {
-							origin: `${lat}, ${lon}`,
-							destination: `${selectedCafe.y}, ${selectedCafe.x}`,
+							origin: `${lon}, ${lat}`,
+							destination: `${selectedCafe.x}, ${selectedCafe.y}`,
 							priority: "RECOMMEND",
 							alternatives: "true",
 							road_details: "true",
 							summary: "true",
 						} as any;
-						const queryStr = new URLSearchParams(paramsObj).toString();
+						const queryStr = new URLSearchParams(paramsObj) as any;
 						const response = await fetch(
 							`//apis-navi.kakaomobility.com/v1/directions?${queryStr}`,
 							{
+								method: "GET",
 								headers: {
-									"Content-Type": "application/json",
-									Authorization: `KakaoAK ${KAKAO_KEY}`,
+									Authorization: `KakaoAK ${KAKAO_REST_KEY}`,
+									"content-type": "application/json",
 								},
 							}
 						);
@@ -177,7 +178,7 @@ export default function Map() {
 	return (
 		<div className='relative'>
 			<Script
-				src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_KEY}&autoload=false&libraries=services,clusterer,drawing`}
+				src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false&libraries=services,clusterer,drawing`}
 				onLoad={() => {
 					if (window.kakao) {
 						kakao.maps.load(() => {

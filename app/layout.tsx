@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation";
 import Script from "next/script";
-import { KAKAO_KEY } from "./constants";
+import { KAKAO_JS_KEY } from "./constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
