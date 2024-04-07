@@ -100,7 +100,7 @@ export default function Map() {
 	return (
 		<div className='relative'>
 			{loading && (
-				<Skeleton className='w-full h-full min-h-[300px] lg:min-h-[600px] absolute top-0 left-0 z-10' />
+				<Skeleton className='w-full h-full min-h-[300px] bg-neutral-300 lg:min-h-[600px] absolute top-0 left-0 z-10' />
 			)}
 			<div
 				ref={mapEl}
