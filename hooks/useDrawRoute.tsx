@@ -42,7 +42,6 @@ export const useDrawRoute = () => {
 			);
 			selectedCafe.taxiFee = formatMoneyKRW(result.routes[0].summary.fare.taxi);
 			setRandomCafe(selectedCafe);
-			console.log(selectedCafe);
 
 			new kakao.maps.Polyline({
 				map: mapData,

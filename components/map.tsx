@@ -66,7 +66,6 @@ export default function Map() {
 				if (status === kakao.maps.services.Status.OK) {
 					const selectedCafe = data[Math.floor(Math.random() * data.length)];
 					// setRandomCafe(selectedCafe);
-					console.log(selectedCafe);
 					// 오늘의 랜덤 카페 표시
 					setMarker({
 						curLocation: { y: selectedCafe.y, x: selectedCafe.x },
