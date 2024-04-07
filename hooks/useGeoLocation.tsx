@@ -6,7 +6,7 @@ export interface ILocation {
 }
 
 export const useGeoLocation = () => {
-	const [location, setLocation] = useState<ILocation>({
+	const [curLocation, setCulLocation] = useState<ILocation>({
 		latitude: 0,
 		longitude: 0,
 	});
@@ -19,7 +19,7 @@ export const useGeoLocation = () => {
 		geolocation.getCurrentPosition(
 			(position) => {
 				const { latitude, longitude } = position.coords;
-				setLocation({
+				setCulLocation({
 					latitude, // 위도
 					longitude, // 경도
 				});
@@ -29,5 +29,5 @@ export const useGeoLocation = () => {
 			}
 		);
 	}, []);
-	return location;
+	return curLocation;
 };

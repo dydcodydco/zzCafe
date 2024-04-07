@@ -4,10 +4,12 @@ import "./globals.css";
 import Navigation from "@/components/navigation";
 import Script from "next/script";
 import { KAKAO_JS_KEY } from "./constants";
+import RecoilRootWrapper from "./recoil-wrapper";
 declare global {
 	interface Window {
 		kakao: any;
 		closeOverlay: any;
+		overlay: any;
 	}
 }
 const inter = Inter({ subsets: ["latin"] });
@@ -29,8 +31,10 @@ export default function RootLayout({
 					strategy={"beforeInteractive"}
 					src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false&libraries=services,clusterer,drawing`}
 				/>
-				<Navigation />
-				{children}
+				<RecoilRootWrapper>
+					<Navigation />
+					{children}
+				</RecoilRootWrapper>
 			</body>
 		</html>
 	);
