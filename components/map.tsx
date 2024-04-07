@@ -28,8 +28,8 @@ export default function Map() {
 			try {
 				const { kakao } = window;
 				const paramsObj = {
-					origin: `${oroginLocation.y},${oroginLocation.x}`,
-					destination: `${destinationLocation.y},${destinationLocation.x}`,
+					origin: `${oroginLocation.x},${oroginLocation.y}`,
+					destination: `${destinationLocation.x},${destinationLocation.y}`,
 					priority: "RECOMMEND",
 				};
 
