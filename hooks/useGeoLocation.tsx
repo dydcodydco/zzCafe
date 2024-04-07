@@ -1,4 +1,6 @@
+import { curLocationState } from "@/store/inex";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 export interface ILocation {
 	latitude: number;
@@ -6,10 +8,7 @@ export interface ILocation {
 }
 
 export const useGeoLocation = () => {
-	const [curLocation, setCulLocation] = useState<ILocation>({
-		latitude: 0,
-		longitude: 0,
-	});
+	const [location, setLocation] = useRecoilState(curLocationState);
 
 	useEffect(() => {
 		const { geolocation } = navigator;
@@ -19,7 +18,7 @@ export const useGeoLocation = () => {
 		geolocation.getCurrentPosition(
 			(position) => {
 				const { latitude, longitude } = position.coords;
-				setCulLocation({
+				setLocation({
 					latitude, // 위도
 					longitude, // 경도
 				});
@@ -29,5 +28,5 @@ export const useGeoLocation = () => {
 			}
 		);
 	}, []);
-	return curLocation;
+	return location;
 };
