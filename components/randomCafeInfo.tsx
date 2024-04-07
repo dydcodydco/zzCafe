@@ -7,7 +7,7 @@ export default function RandomCafeInfo() {
 	const rancomCafe = useRecoilValue(randomCafeState);
 	return (
 		<>
-			<section className='w-full pt-7 pb-12 md:py-24'>
+			<section className='w-full pt-7 pb-12 md:py-20'>
 				<div className='container grid items-center justify-center gap-6 px-4 md:px-6'>
 					<div className='space-y-2'>
 						<h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>
