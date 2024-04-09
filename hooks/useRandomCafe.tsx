@@ -26,7 +26,7 @@ export function useRandomCafe() {
 			const placesSearchCB = async (data: any, status: any) => {
 				if (status === kakao.maps.services.Status.OK) {
 					const selectedCafe = data[Math.floor(Math.random() * data.length)];
-					setRandomCafe(selectedCafe);
+					// setRandomCafe(selectedCafe);
 
 					// 오늘의 랜덤 카페 표시
 					const curLocationObj = {

@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import useSetMap from "./useSetMap";
+import { HOME_IMAGE } from "@/app/constants";
 
 export interface IMarkerProps {
 	map: any;
@@ -8,7 +9,7 @@ export interface IMarkerProps {
 }
 
 export function useAddMarker() {
-	const { homeImage, mapData } = useSetMap({});
+	const { mapData } = useSetMap({});
 
 	const handleAddMarker = useCallback(
 		({ map, curLocation, home }: IMarkerProps) => {
@@ -21,8 +22,8 @@ export function useAddMarker() {
 					curLocation.longitude
 				),
 			} as any;
-			if (homeImage && home) {
-				const imageSrc = homeImage;
+			if (home) {
+				const imageSrc = HOME_IMAGE;
 				const imageSize = new kakao.maps.Size(24, 35);
 				const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 				markerObj.image = markerImage;

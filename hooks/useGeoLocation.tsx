@@ -17,7 +17,6 @@ export const useGeoLocation = () => {
 
 		geolocation.getCurrentPosition(
 			(position) => {
-				console.log("setLocation");
 				const { latitude, longitude } = position.coords;
 				setLocation({
 					latitude, // 위도

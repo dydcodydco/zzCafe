@@ -21,7 +21,7 @@ export const curLocationState = atom({
 
 export const randomCafeState = atom({
 	key: "randomCafeState",
-	default: {},
+	default: {} as ICafeProps,
 });
 
 export const loadingState = atom({
