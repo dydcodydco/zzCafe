@@ -1,8 +1,4 @@
-import {
-	IDrawRouteProps,
-	KAKAO_NAVI_URL,
-	KAKAO_REST_KEY,
-} from "@/app/constants";
+import { IDrawRouteProps, KAKAO_NAVI_URL } from "@/app/constants";
 import { randomCafeState } from "@/store/inex";
 import { formatMeterWithComma } from "@/utils/formatMeterWithComma";
 import { formatMoneyKRW } from "@/utils/formatMoneyFRW";
@@ -28,7 +24,7 @@ export const useDrawRoute = () => {
 			const response = await fetch(`${KAKAO_NAVI_URL}?${queryStr}`, {
 				method: "GET",
 				headers: {
-					Authorization: `KakaoAK ${KAKAO_REST_KEY}`,
+					Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_KEY}`,
 					"content-type": "application/json",
 				},
 			});

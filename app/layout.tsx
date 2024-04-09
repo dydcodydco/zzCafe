@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation";
 import Script from "next/script";
-import { KAKAO_JS_KEY } from "./constants";
 import RecoilRootWrapper from "./recoil-wrapper";
 declare global {
 	interface Window {
@@ -29,7 +28,7 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<Script
 					strategy={"beforeInteractive"}
-					src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false&libraries=services,clusterer,drawing`}
+					src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&autoload=false&libraries=services,clusterer,drawing`}
 				/>
 				<RecoilRootWrapper>
 					<Navigation />

@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 		// res.status(201).json({ message: "User created", user });
 	} catch (error) {
 		return NextResponse.json({
-			message: "Internal server error",
+			error: "Internal server error",
 		});
 	}
 }
