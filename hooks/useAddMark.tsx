@@ -1,32 +1,35 @@
-import { clusterState } from "@/store/inex";
-import { useSetRecoilState } from "recoil";
+import { useCallback } from "react";
+import useSetMap from "./useSetMap";
 
 export interface IMarkerProps {
-	curLocation: any;
-	clusterer: any;
-	kakao: any;
 	map: any;
-	image?: string;
+	curLocation: any;
+	home?: boolean;
 }
 
 export function useAddMarker() {
-	const setClusterData = useSetRecoilState(clusterState);
-	const setMarker = (props: IMarkerProps) => {
-		const { curLocation, clusterer, kakao, map, image } = props;
-		const markerObj = {
-			map,
-			position: new kakao.maps.LatLng(curLocation.y, curLocation.x),
-		} as any;
-		if (image) {
-			const imageSrc = image;
-			const imageSize = new kakao.maps.Size(24, 35);
-			const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-			markerObj.image = markerImage;
-		}
-		const marker = new kakao.maps.Marker(markerObj);
-		return marker;
-		// clusterer.addMarkers(marker);
-		// setClusterData(clusterer);
-	};
-	return { setMarker };
+	const { homeImage, mapData } = useSetMap({});
+
+	const handleAddMarker = useCallback(
+		({ map, curLocation, home }: IMarkerProps) => {
+			if (!map || Object.keys(map).length === 0) return;
+			const { kakao } = window;
+			const markerObj = {
+				map,
+				position: new kakao.maps.LatLng(
+					curLocation.latitude,
+					curLocation.longitude
+				),
+			} as any;
+			if (homeImage && home) {
+				const imageSrc = homeImage;
+				const imageSize = new kakao.maps.Size(24, 35);
+				const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+				markerObj.image = markerImage;
+			}
+			return new kakao.maps.Marker(markerObj);
+		},
+		[mapData]
+	);
+	return { handleAddMarker };
 }

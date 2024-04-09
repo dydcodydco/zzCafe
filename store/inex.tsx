@@ -3,7 +3,7 @@ import { atom } from "recoil";
 
 export const mapDataSate = atom({
 	key: "mapDataSate",
-	default: {} as any,
+	default: null,
 });
 
 export const clusterState = atom({
@@ -21,5 +21,20 @@ export const curLocationState = atom({
 
 export const randomCafeState = atom({
 	key: "randomCafeState",
-	default: {} as ICafeProps,
+	default: {},
+});
+
+export const loadingState = atom({
+	key: "loadingState",
+	default: true,
+});
+
+export const markersState = atom({
+	key: "markersState",
+	default: [],
+});
+
+export const aMarkerState = atom({
+	key: "aMarkerState",
+	default: {} as any,
 });
