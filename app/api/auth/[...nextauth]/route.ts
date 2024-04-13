@@ -1,3 +1,4 @@
+import axios from "axios";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -11,22 +12,21 @@ const handler = NextAuth({
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials, req) {
-				const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
+				const res = await axios({
 					method: "POST",
+					url: `${process.env.NEXTAUTH_URL}/api/signin`,
+					data: credentials,
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({
-						email: credentials?.email,
-						password: credentials?.password,
-					}),
 				});
-				const user = await res.json();
+				console.log(res);
+				const user = res.data;
 				console.log("$$$user: ", user);
 
 				if (user) {
 					// Any object returned will be saved in `user` property of the JWT
-					return user;
+					return user ? user : null;
 				} else {
 					// If you return null then an error will be displayed advising the user to check their details.
 					return null;
