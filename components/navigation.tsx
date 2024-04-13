@@ -32,7 +32,7 @@ export default function Navigation() {
 					className='text-sm font-medium hover:underline underline-offset-4'
 					href={"/map"}
 				>
-					MY CAFE LIST
+					MY CAFE LIST {process.env.NEXTAUTH_URL}
 				</Link>
 				<NavUserMenu />
 			</nav>
