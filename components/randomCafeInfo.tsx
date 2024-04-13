@@ -1,5 +1,5 @@
 "use client";
-import { randomCafeState } from "@/store/inex";
+import { randomCafeState } from "@/store";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";

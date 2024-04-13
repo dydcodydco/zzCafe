@@ -1,5 +1,5 @@
 import { IDrawRouteProps, KAKAO_NAVI_URL } from "@/app/constants";
-import { randomCafeState } from "@/store/inex";
+import { randomCafeState } from "@/store";
 import { formatMeterWithComma } from "@/utils/formatMeterWithComma";
 import { formatMoneyKRW } from "@/utils/formatMoneyFRW";
 import { useRecoilState } from "recoil";

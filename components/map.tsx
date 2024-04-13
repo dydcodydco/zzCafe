@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import { useRecoilState } from "recoil";
-import { loadingState, mapDataSate } from "@/store/inex";
+import { loadingState, mapDataSate } from "@/store";
 import { useAddMarker } from "@/hooks/useAddMark";
 import { useRandomCafe } from "@/hooks/useRandomCafe";
 import { useMapOveray } from "@/hooks/useMapOverlay";

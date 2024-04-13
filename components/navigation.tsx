@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NavUserMenu from "./navUserMenu";
 
 function MountainIcon({ className }: { className: string }) {
 	return (
@@ -29,22 +30,11 @@ export default function Navigation() {
 			<nav className='ml-auto flex gap-4 sm:gap-6'>
 				<Link
 					className='text-sm font-medium hover:underline underline-offset-4'
-					href='#'
+					href={"/map"}
 				>
-					Menu
+					MY CAFE LIST
 				</Link>
-				<Link
-					className='text-sm font-medium hover:underline underline-offset-4'
-					href={"/user/signup"}
-				>
-					JOIN
-				</Link>
-				<Link
-					className='text-sm font-medium hover:underline underline-offset-4'
-					href='#'
-				>
-					Contact
-				</Link>
+				<NavUserMenu />
 			</nav>
 		</header>
 	);

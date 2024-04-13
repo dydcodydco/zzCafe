@@ -1,40 +1,47 @@
 "use client";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Form() {
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FieldValues>();
-	const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-		try {
-			const { email, password, name } = data;
 
-			console.log({ email, password, name });
-			// api 요청을 통한 회원가입 로직 구현
-			const response = await fetch("/api/signup", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ email, password, name }),
-			});
+	const onSubmit: SubmitHandler<FieldValues> = useCallback(
+		async (data: FieldValues) => {
+			try {
+				const { email, password, name } = data;
 
-			const responseData = await response.json();
-			if (response.ok) {
-				console.log("회원가입 성공", responseData);
-			} else {
-				console.log("회원가입 실패", responseData.error);
-				// 에러 처리 조직
+				// api 요청을 통한 회원가입 로직 구현
+				const response = await fetch("/api/user", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ email, password, name }),
+				});
+
+				const responseData = await response.json();
+				if (response.ok) {
+					console.log(`회원가입 성공`, responseData);
+					signIn();
+				} else {
+					console.log(`회원가입 실패`, responseData.error);
+					// 에러 처리 조직
+				}
+			} catch (e) {
+				console.log(e);
 			}
-		} catch (e) {
-			console.log(e);
-		}
-	};
+		},
+		[router]
+	);
 	return (
 		<section className='w-full py-12 md:py-24 lg:py-32'>
 			<div className='container flex flex-col items-center justify-center space-y-4 px-4 md:px-6'>

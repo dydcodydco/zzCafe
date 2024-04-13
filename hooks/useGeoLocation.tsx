@@ -1,4 +1,4 @@
-import { curLocationState } from "@/store/inex";
+import { curLocationState } from "@/store";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 

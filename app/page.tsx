@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Map from "@/components/map";
 import RandomCafeInfo from "@/components/randomCafeInfo";
-
 export default function Component() {
 	return (
 		<div className='flex flex-col min-h-[100dvh]'>

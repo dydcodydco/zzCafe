@@ -5,7 +5,7 @@ import { useMapOveray } from "./useMapOverlay";
 import useSetMap from "./useSetMap";
 import { ICafeProps, ILocation } from "@/app/constants";
 import { useRecoilState } from "recoil";
-import { randomCafeState } from "@/store/inex";
+import { randomCafeState } from "@/store";
 
 export interface IRandomCafeProps {
 	map: any;

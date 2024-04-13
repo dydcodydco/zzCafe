@@ -8,7 +8,7 @@ import {
 	mapDataSate,
 	markersState,
 	randomCafeState,
-} from "@/store/inex";
+} from "@/store";
 import { HOME_IMAGE } from "@/app/constants";
 
 export interface IMarkerProps {

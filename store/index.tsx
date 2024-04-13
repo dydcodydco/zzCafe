@@ -1,4 +1,4 @@
-import { ICafeProps } from "@/app/constants";
+import { ICafeProps, IUserProps } from "@/app/constants";
 import { atom } from "recoil";
 
 export const mapDataSate = atom({
@@ -37,4 +37,9 @@ export const markersState = atom({
 export const aMarkerState = atom({
 	key: "aMarkerState",
 	default: {} as any,
+});
+
+export const userState = atom({
+	key: "userState",
+	default: {} as IUserProps,
 });
